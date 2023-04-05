@@ -24,8 +24,9 @@ export default class extends Module {
 		const times = parseInt(query[1], 10);
 		const dice = parseInt(query[2], 10);
 		const opt_test = query[3];
-		let opt_val = query[4];
-		if (!opt_val){ opt_val = parseInt(opt_val); }
+		const opt_val_str = query[4];
+		let opt_val = 0;
+		if (!opt_val_str){ opt_val = parseInt(opt_val_str); }
 
 		if (times < 1 || times > 10) return false;
 		if (dice < 2 || dice > 1000) return false;
@@ -36,7 +37,7 @@ export default class extends Module {
 		for (let i = 0; i < times; i++) {
 			let v = Math.floor(Math.random() * dice) + 1
 			results.push(v);
-			if (!opt_val){
+			if (!opt_val_str){
 				switch(opt_test){
 					case "<": opt_results.push(v < opt_val); break;
 					case "<=": opt_results.push(v <= opt_val); break;
@@ -49,7 +50,7 @@ export default class extends Module {
 		}
 		
 		let opt_str = "";
-		if (!opt_val){
+		if (!opt_val_str){
 			if (times == 1){
 				opt_str = opt_results[0] ? " 成功です！" : " 不成功です……";
 			}else{
@@ -58,7 +59,7 @@ export default class extends Module {
 					if (opt_results[i]){ ok++; }
 				}
 				let ng = times-ok;
-				opt_str = "  成功 " + String(ok) + " 件,  不成功 " + String(ng) " 件,  平均 " + String(Math.floor(100*ok/times)) + " % 位成功しました";
+				opt_str = "  成功 " + String(ok) + " 件,  不成功 " + String(ng) + " 件,  平均 " + String(Math.floor(100*ok/times)) + " % 位成功しました";
 			}
 		}
 		
