@@ -26,7 +26,7 @@ export default class extends Module {
 		const opt_test = query[3];
 		const opt_val_str = query[4];
 		let opt_val = -1;
-		if (!opt_val_str){ opt_val = parseInt(opt_val_str); }
+		if (!opt_val_str){ opt_val = parseInt(opt_val_str,10); }
 
 		if (times < 1 || times > 10) return false;
 		if (dice < 2 || dice > 1000) return false;
