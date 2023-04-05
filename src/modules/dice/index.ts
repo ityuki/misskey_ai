@@ -24,7 +24,7 @@ export default class extends Module {
 		const times = parseInt(query[1], 10);
 		const dice = parseInt(query[2], 10);
 		const opt_test = query[3];
-		const opt_val = query[4];
+		let opt_val = query[4];
 		if (!opt_val){ opt_val = parseInt(opt_val); }
 
 		if (times < 1 || times > 10) return false;
