@@ -32,7 +32,7 @@ export default class extends Module {
 		if (dice < 2 || dice > 1000) return false;
 
 		const results: number[] = [];
-		const opt_results : bool[] = [];
+		const opt_results : boolean[] = [];
 
 		for (let i = 0; i < times; i++) {
 			let v = Math.floor(Math.random() * dice) + 1
