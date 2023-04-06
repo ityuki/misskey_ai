@@ -25,7 +25,7 @@ export default class extends Module {
 	private async mentionHook(msg: Message) {
 		if (msg.text == null) return false;
 
-		const query = msg.text.match(/\s+([^\s]+?)\s*といえば(\?|？)?/);
+		const query = msg.text.match(/\s+([^\s]+?)\s*と(い|言|云)えば(\?|？)?/);
 
 		if (query == null) return false;
 
@@ -42,6 +42,7 @@ export default class extends Module {
 					if (tryrows.length > 0){
 					}else{
 						const ekeyword = keyword.replace(/(\%|\_|\!)/g,'!$1') + "%";
+						this.ai.log(ekeyword);
 						tryrows = (await util
 							.promisify(database.all.bind(database, 'select term1,term2,score from related where term1 like ? escape \'!\' order by score desc limit 50', ekeyword))
 							.call(database)) as ToiebaRow[];
@@ -64,6 +65,7 @@ export default class extends Module {
 					}
 				}
 			}catch(e){
+				this.ai.log(e.toString());
 				// DO NOTHHING
 			}
 			await util.promisify(database.close).call(database);
