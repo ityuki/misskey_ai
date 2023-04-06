@@ -42,7 +42,7 @@ export default class extends Module {
 					if (tryrows.length > 0){
 					}else{
 						const ekeyword = keyword.replace(/(\%|\_|\!)/g,'!$1') + "%";
-						this.ai.log(ekeyword);
+						//this.ai.log(ekeyword);
 						tryrows = (await util
 							.promisify(database.all.bind(database, 'select term1,term2,score from related where term1 like ? escape \'!\' order by score desc limit 50', ekeyword))
 							.call(database)) as ToiebaRow[];
