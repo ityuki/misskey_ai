@@ -87,7 +87,7 @@ promiseRetry(retry => {
 		new ChartModule(),
 		new SleepReportModule(),
 		new NotingModule(),
-		new PollModule(),
+		//new PollModule(),
 		new ReminderModule(),
 		new ToiebaModule()
 	]);
