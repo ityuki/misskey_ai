@@ -13,7 +13,7 @@ export default class extends Module {
 	public install() {
 		setInterval(() => {
 			if (Math.random() < 0.1) {
-				this.post();
+				//this.post();
 			}
 		}, 1000 * 60 * 60);
 
