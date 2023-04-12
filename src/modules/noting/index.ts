@@ -7,12 +7,17 @@ import config from '@/config';
 export default class extends Module {
 	public readonly name = 'noting';
 
+	private last_msg_date = '';
+
 	@autobind
 	public install() {
 		if (config.notingEnabled === false) return {};
 
+		if ((new Date()).toDateString() == this. last_msg_date) return {};
+
 		setInterval(() => {
 			if (Math.random() < 0.04) {
+				this.last_msg_date = (new Date()).toDateString();
 				this.post();
 			}
 		}, 1000 * 60 * 10);
