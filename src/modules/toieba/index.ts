@@ -25,7 +25,7 @@ export default class extends Module {
 	private async mentionHook(msg: Message) {
 		if (msg.text == null) return false;
 
-		const query = msg.text.match(/\s+([^\s]+?)\s*(?:と(?:い|言|云)えば|(?:って|とは)|is\s*)(?:何|なに)(\?|？)?/);
+		const query = msg.text.match(/\s+([^\s]+?)\s*(?:と(?:い|言|云)えば|(?:って|とは)(?:何|なに)?|is\s*(?:何|なに))(\?|？)?/);
 
 		if (query == null) return false;
 
