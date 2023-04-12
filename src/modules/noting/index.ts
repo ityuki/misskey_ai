@@ -13,7 +13,7 @@ export default class extends Module {
 	public install() {
 		if (config.notingEnabled === false) return {};
 
-		if ((new Date()).toDateString() == this. last_msg_date) return {};
+		if ((new Date()).toDateString() == this.last_msg_date) return {};
 
 		setInterval(() => {
 			if (Math.random() < 0.04) {
