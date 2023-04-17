@@ -17,7 +17,7 @@ export default class extends Module {
 	private async mentionHook(msg: Message) {
 		if (msg.text == null) return false;
 
-		const query = msg.text.match(/([0-9]+)[dD]([0-9]+)(?:\s*(\<|\<\=|\>|\>\=|\=|\=\=|\!\=)\s*([0-9]+))?/);
+		const query = msg.text.match(/([0-9]+)[dD]([0-9]+)(?:\s*(\<|\<\=|\>|\>\=|\=|\=\=|\!\=|\<\>)\s*([0-9]+))?/);
 
 		if (query == null) return false;
 
@@ -33,18 +33,26 @@ export default class extends Module {
 
 		const results: number[] = [];
 		const opt_results : boolean[] = [];
+		let opt_sum = 0
 
 		for (let i = 0; i < times; i++) {
 			let v = Math.floor(Math.random() * dice) + 1
 			results.push(v);
-			if (opt_val >= 0){
+			opt_sum += v;
+		}
+		if (times > 1) {
+			results.push(opt_sum);
+		}
+		if (opt_val >= 0){
+			for (let i = 0; i < results.length; i++){
+				let v = results[i];
 				switch(opt_test){
 					case "<": opt_results.push(v < opt_val); break;
 					case "<=": opt_results.push(v <= opt_val); break;
 					case ">": opt_results.push(v > opt_val); break;
 					case ">=": opt_results.push(v >= opt_val); break;
 					case "=": case "==": opt_results.push(v == opt_val); break;
-					case "!=": opt_results.push(v != opt_val); break;
+					case "!=": case "<>": opt_results.push(v != opt_val); break;
 				}
 			}
 		}
@@ -59,7 +67,9 @@ export default class extends Module {
 					if (opt_results[i]){ ok++; }
 				}
 				let ng = times-ok;
-				opt_str = "  成功 " + String(ok) + " 件,  不成功 " + String(ng) + " 件,  平均 " + String(Math.floor(100*ok/times)) + " % 位成功しました";
+				opt_str = "  成功 " + String(ok) + " 件,  不成功 " + String(ng) + " 件,  平均 " + String(Math.floor(100*ok/times)) + " % 位成功しました。\n合計は " + String(results[times]) + " です！　こちらは " + (opt_results[times] ? "成功です！": "不成功です……");
+				results.pop();
+				opt_results.pop();
 			}
 		}
 		
