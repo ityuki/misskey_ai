@@ -71,6 +71,14 @@ export default class extends Module {
 				results.pop();
 				opt_results.pop();
 			}
+		}else{
+			if (times == 1){
+				// DO NOTHING
+			}else{
+				opt_str = "合計は " + String(results[times]) + " です！";
+                                results.pop();
+                                opt_results.pop();
+			}
 		}
 		
 		msg.reply(serifs.dice.done(results.join(' ')) + opt_str);
