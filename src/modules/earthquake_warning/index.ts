@@ -13,6 +13,7 @@ export default class extends Module {
   };
   private diff_time = 0;
   private last_100_id:String[] = [];
+  private now_loading = false;
 
 	@autobind
 	public install() {
@@ -64,28 +65,36 @@ export default class extends Module {
     }
   }
   private async run(){
+    if (this.now_loading == true) return;
     const option = {
       url: this.URL.BASE + this.timedate_to_str(new Date(new Date().getTime() + this.diff_time)) + ".json",
       json: true
     }
-    const response = await request.get(option);
-    if (response.result.message == "" && response.is_training == false){
-      // have data
-      if (this.last_100_id.indexOf(response.report_id) == -1){
-        // catch first
-        if (response.is_cancel == false){
-          await this.doit(response);
+    this.now_loading = true;
+    try{
+      const response = await request.get(option);
+      this.now_loading = false;
+      if (response.result.message == "" && response.is_training == false){
+        // have data
+        if (this.last_100_id.indexOf(response.report_id) == -1){
+          // catch first
+          if (response.is_cancel == false){
+            await this.doit(response);
+          }
+        }else if(response.is_cancel == true){
+          // cancel
+          await this.do_cancel(response);
+        }else if(response.is_final == true){
+          // final
+          await this.do_final(response);
         }
-      }else if(response.is_cancel == true){
-        // cancel
-        await this.do_cancel(response);
-      }else if(response.is_final == true){
-        // final
-        await this.do_final(response);
       }
-    }
-    while (this.last_100_id.length > 100){
-      this.last_100_id.shift();
+      while (this.last_100_id.length > 100){
+        this.last_100_id.shift();
+      }
+    }catch(e){
+      this.now_loading = false;
+      throw e;
     }
   }
   private async doit(response){
