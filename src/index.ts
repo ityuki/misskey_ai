@@ -35,6 +35,7 @@ import NotingModule from './modules/noting';
 import PollModule from './modules/poll';
 import ReminderModule from './modules/reminder';
 import ToiebaModule from './modules/toieba';
+import EarthQuakeWarningModule from './modules/earthquake_warning';
 
 console.log('   __    ____  _____  ___ ');
 console.log('  /__\\  (_  _)(  _  )/ __)');
@@ -89,7 +90,8 @@ promiseRetry(retry => {
 		new NotingModule(),
 		new PollModule(),
 		new ReminderModule(),
-		new ToiebaModule()
+		new ToiebaModule(),
+		new EarthQuakeWarningModule()
 	]);
 }).catch(e => {
 	log(chalk.red('Failed to fetch the account'));
