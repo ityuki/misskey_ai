@@ -133,7 +133,7 @@ export default class extends Module {
     }
     msg += "\n\n";
     msg += "地震速報です！\n";
-    msg += response.region_name + "あたりで震度" + response.calcintensity + "位の揺れが観測されました！\n";
+    msg += response.region_name + "あたりで震度" + response.calcintensity + "位の揺れが予想されます！\n";
     msg += "マグニチュードは" + response.magunitude + "、震源の深さは" + response.depth + "みたいです。\n";
     await this.putmsg(msg);
   }
