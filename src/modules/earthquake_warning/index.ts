@@ -122,7 +122,8 @@ export default class extends Module {
         '揺れそうな気がします！',
         'ゆ……？',
         'ゆ？',
-        'ぽよん！'
+        'ぽよん！',
+        ':blobbounce:'
       ])
     }else if(clc == 4){
       msg += this.rand_choice([
