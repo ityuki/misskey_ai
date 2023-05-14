@@ -48,6 +48,16 @@ export default class extends Module {
       ("0" + String(d.getSeconds())).slice(-2)
     )
   }
+  private timedate_to_ja_str(d:Date){
+    return (
+      String(d.getFullYear()) + "/" +
+      ("0" + String(d.getMonth()+1)).slice(-2) + "/" +
+      ("0" + String(d.getDate())).slice(-2) + " " +
+      ("0" + String(d.getHours())).slice(-2) + ":" +
+      ("0" + String(d.getMinutes())).slice(-2) + ":" +
+      ("0" + String(d.getSeconds())).slice(-2) + " JST"
+    )
+  }
   private rand_choice(a:Array<String>){
     const r = Math.floor(Math.random() * a.length);
     return a[r];
@@ -107,8 +117,12 @@ export default class extends Module {
     if (clc < 4){
       msg += this.rand_choice([
         'ゆれ……',
+        'ゆれ?',
         '地震ですかね？',
-        '揺れそうな気がします！'
+        '揺れそうな気がします！',
+        'ゆ……？',
+        'ゆ？',
+        'ぽよん！'
       ])
     }else if(clc == 4){
       msg += this.rand_choice([
@@ -133,7 +147,7 @@ export default class extends Module {
     }
     msg += "\n\n";
     msg += "地震速報です！\n";
-    msg += response.region_name + "あたりで震度" + response.calcintensity + "位の揺れが予想されます！\n";
+    msg += this.timedate_to_ja_str(new Date()) + "頃" + response.region_name + "あたりで震度" + response.calcintensity + "位の揺れが予想されます！\n";
     msg += "マグニチュードは" + response.magunitude + "、震源の深さは" + response.depth + "みたいです。\n";
     await this.putmsg(msg);
   }
