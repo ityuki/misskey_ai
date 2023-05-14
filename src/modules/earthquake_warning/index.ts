@@ -146,8 +146,8 @@ export default class extends Module {
       ])
     }
     msg += "\n\n";
-    msg += "地震速報です！\n";
-    msg += this.timedate_to_ja_str(new Date()) + "頃" + response.region_name + "あたりで震度" + response.calcintensity + "位の揺れが予想されます！\n";
+    msg += this.timedate_to_ja_str(new Date()) + "頃、地震速報を受信しました！\n";
+    msg += response.region_name + "あたりで震度" + response.calcintensity + "位の揺れが予想されます！\n";
     msg += "マグニチュードは" + response.magunitude + "、震源の深さは" + response.depth + "みたいです。\n";
     await this.putmsg(msg);
   }
