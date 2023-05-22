@@ -109,8 +109,12 @@ export default class extends Module {
   }
   private async doit(response){
     const clc = parseInt(response.calcintensity.split()[0],10);
+    const mg = parseFloat(response.magunitude);
     if (clc < 3){
       return; // 震度3以上のみ対象
+    }
+    if (clc < 4 && mg< 4){
+      return; // 震度４未満の場合、マグニチュード4.0未満は無視
     }
     this.last_100_id.push(response.report_id);
     let msg = "";
