@@ -97,12 +97,9 @@ promiseRetry(retry => {
 		new NotingModule(),
 		new PollModule(),
 		new ReminderModule(),
-<<<<<<< HEAD
-		new ToiebaModule(),
-		new EarthQuakeWarningModule()
-=======
 		new CheckCustomEmojisModule(),
->>>>>>> syuilo-master
+                new ToiebaModule(),
+                new EarthQuakeWarningModule(),		
 	]);
 }).catch(e => {
 	log(chalk.red('Failed to fetch the account'));
