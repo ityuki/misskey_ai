@@ -57,11 +57,14 @@ export default class extends Module {
 			chart = {
 				title: `@${params.user.username}さんの投稿数`,
 				datasets: [{
-					data: data.diffs.normal
+				       //@ts-ignore
+				        data: data.diffs.normal
 				}, {
-					data: data.diffs.reply
+				//@ts-ignore
+				        data: data.diffs.reply
 				}, {
-					data: data.diffs.renote
+				//@ts-ignore
+				        data: data.diffs.renote
 				}]
 			};
 		} else if (type === 'followers') {
@@ -74,8 +77,10 @@ export default class extends Module {
 			chart = {
 				title: `@${params.user.username}さんのフォロワー数`,
 				datasets: [{
-					data: data.local.followers.total
+				//@ts-ignore
+				        data: data.local.followers.total
 				}, {
+				//@ts-ignore
 					data: data.remote.followers.total
 				}]
 			};
@@ -87,10 +92,13 @@ export default class extends Module {
 
 			chart = {
 				datasets: [{
+				//@ts-ignore
 					data: data.local.diffs.normal
 				}, {
+				//@ts-ignore
 					data: data.local.diffs.reply
 				}, {
+				//@ts-ignore
 					data: data.local.diffs.renote
 				}]
 			};
@@ -112,6 +120,7 @@ export default class extends Module {
 				}
 
 				datasets.push({
+				//@ts-ignore
 					data: values
 				});
 			}

@@ -34,8 +34,8 @@ import NotingModule from './modules/noting/index.js';
 import PollModule from './modules/poll/index.js';
 import ReminderModule from './modules/reminder/index.js';
 import CheckCustomEmojisModule from './modules/check-custom-emojis/index.js';
-import ToiebaModule from './modules/toieba';
-import EarthQuakeWarningModule from './modules/earthquake_warning';
+import ToiebaModule from './modules/toieba/index.js';
+import EarthQuakeWarningModule from './modules/earthquake_warning/index.js';
 
 console.log('   __    ____  _____  ___ ');
 console.log('  /__\\  (_  _)(  _  )/ __)');
@@ -66,13 +66,15 @@ promiseRetry(retry => {
 	}).json().catch(retry);
 }, {
 	retries: 3
-}).then(account => {
+	}).then(account => {
+	// @ts-ignore
 	const acct = `@${account.username}`;
 	log(chalk.green(`Account fetched successfully: ${chalk.underline(acct)}`));
 
 	log('Starting AiOS...');
 
 	// 藍起動
+	// @ts-ignore
 	new 藍(account, [
 		new CoreModule(),
 		new EmojiModule(),

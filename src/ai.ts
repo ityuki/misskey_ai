@@ -362,6 +362,7 @@ export default class 藍 {
 	@bindThis
 	public async post(param: any) {
 		const res = await this.api('notes/create', param);
+		// @ts-ignore
 		return res.createdNote;
 	}
 

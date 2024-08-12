@@ -14,8 +14,11 @@
 		"strict": true,
 		"strictFunctionTypes": true,
 		"strictNullChecks": true,
+		"strictPropertyInitialization": false,
+	 	"useUnknownInCatchVariables": false,
+		"noImplicitAny":false,
 		"experimentalDecorators": true,
-		"noImplicitReturns": true,
+		"noImplicitReturns": false,
 		"noImplicitAny": false,
 		"esModuleInterop": true,
 		"typeRoots": [

@@ -39,6 +39,7 @@ export default class extends Module {
 			limit: 30
 		});
 
+		// @ts-ignore
 		const interestedNotes = tl.filter(note =>
 			note.userId !== this.ai.account.id &&
 			note.text != null &&

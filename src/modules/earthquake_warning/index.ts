@@ -1,8 +1,8 @@
-import autobind from 'autobind-decorator';
-import Module from '@/module';
-import serifs from '@/serifs';
-import { genItem } from '@/vocabulary';
-import * as request from 'request-promise-native';
+import { bindThis } from '@/decorators.js';
+import Module from '@/module.js';
+import serifs from '@/serifs.js';
+import { genItem } from '@/vocabulary.js';
+import request from 'axios';
 
 export default class extends Module {
 	public readonly name = 'earthquake_warning';
@@ -15,7 +15,7 @@ export default class extends Module {
   private last_100_id:String[] = [];
   private now_loading = false;
 
-	@autobind
+	@bindThis
 	public install() {
     this.do_init()
       .then(()=>{
@@ -63,26 +63,18 @@ export default class extends Module {
     return a[r];
   }
   private async do_init(){
-    const option = {
-      url: this.URL.LATEST,
-      json: true
-    };
     for(let i=0;i<1;i++){
       const ctime = new Date();
-      const response = await request.get(option);
+      const response = (await request.get(this.URL.LATEST)).data;
       const svt = this.timestr_to_obj(response.latest_time);
       this.diff_time = Math.floor((svt.getTime() - ctime.getTime() - 1000));
     }
   }
   private async run(){
     if (this.now_loading == true) return;
-    const option = {
-      url: this.URL.BASE + this.timedate_to_str(new Date(new Date().getTime() + this.diff_time)) + ".json",
-      json: true
-    }
     this.now_loading = true;
     try{
-      const response = await request.get(option);
+      const response = (await request.get(this.URL.BASE + this.timedate_to_str(new Date(new Date().getTime() + this.diff_time)) + ".json")).data;
       this.now_loading = false;
       if (response.result.message == "" && response.is_training == false){
         // have data

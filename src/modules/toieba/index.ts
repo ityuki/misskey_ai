@@ -1,7 +1,8 @@
-import autobind from 'autobind-decorator';
-import Module from '@/module';
-import Message from '@/message';
-import { Database } from 'sqlite3';
+import { bindThis } from '@/decorators.js';
+import Module from '@/module.js';
+import Message from '@/message.js';
+import SQLite3 from 'sqlite3';
+const {Database} = SQLite3;
 import * as fs from 'node:fs';
 import * as util from 'node:util';
 
@@ -14,14 +15,14 @@ type ToiebaRow = {
 export default class extends Module {
 	public readonly name = 'toieba';
 
-	@autobind
+	@bindThis
 	public install() {
 		return {
 			mentionHook: this.mentionHook
 		};
 	}
 
-	@autobind
+	@bindThis
 	private async mentionHook(msg: Message) {
 		if (msg.text == null) return false;
 

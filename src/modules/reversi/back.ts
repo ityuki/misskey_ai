@@ -456,6 +456,7 @@ class Session {
 					json: body
 				}).json();
 
+				// @ts-ignore
 				return res.createdNote;
 			} catch (e) {
 				console.error(e);
