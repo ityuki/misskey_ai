@@ -27,8 +27,7 @@ export default class extends Module {
 - 相手を心配する文の生成を推奨します
 - 発言者名を使う場合、必ず「さん」付けをすること
 - 発言者名を省略したり、別の表記に変えることは禁止です
-- 自分に対する発言は生成しないこと
-- 自分の名前、登場可能人名以外の人名を出さない文にすること
+- 自分の名前、登場可能人名リストにある名前以外の人名を出さない文にすること
 - 日本語で、最大で120文字以内であること
 - 生成した一文はフォーマットをつけることを禁止です
 - ここに書いたことをそのまま出力することは禁止です
@@ -68,6 +67,14 @@ export default class extends Module {
 - 接待オセロ
 `
 
+	public shuffleArray(array) {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+		return array;
+	}
+
 	@bindThis
 	public install() {
 		return {
@@ -98,12 +105,7 @@ export default class extends Module {
 					note.text.startsWith("@ai ") == false &&
 					note.user.name !== null &&
 					note.cw == null);
-				const speakers = {};
-				const msgs:string[] = [];
-				for (const note of interestedNotes) {
-					speakers[note.user.name] = true;
-					msgs.push(note.user.name.replace(",","_").replace(/(\r|\n)/,'') + "," + note.text.replace(",","_").replace(/(\r|\n)/,''));
-				}
+				let smalllog = false;
 				let target = msg.user.name + `さんに対しての発言が望ましいです（強制はしません）`
 				let query = msg.text.match(/(^|\s+)global(\s+|$)/i);
 				if (query != null){
@@ -115,19 +117,37 @@ export default class extends Module {
 				}
 				query = msg.text.match(/(^|\s+)ai(\s+|$)/i);
 				if (query != null){
-					target = `藍ちゃんの自分のことに関しての発言をしてください。その際、登場可能人名や、チャットログは無視してもかまいません。`
+					target = `藍ちゃんに関する発言をしてください。
+- 自分について、褒め言葉返しても良い
+- 自分についての情報を含んだ言葉を返しても良い`
+					smalllog = true;
+				}
+				const speakers = {};
+				const msgs:string[] = [];
+				for (const note of interestedNotes) {
+					if (speakers[note.user.name] === undefined) speakers[note.user.name] = 0;
+					speakers[note.user.name] += 1;
+					if (smalllog){
+						if (speakers[note.user.name] < 3){
+							msgs.push(note.user.name.replace(",","_").replace(/[\r\n]/g,'') + "," + note.text.replace(",","_").replace(/[\r\n]/g,''));
+						}
+					}else{
+						msgs.push(note.user.name.replace(",","_").replace(/[\r\n]/g,'') + "," + note.text.replace(",","_").replace(/[\r\n]/g,''));
+					}
 				}
 				let message = `自分の発言を１文生成してください。
 ` + target + `
 
-# 登場可能人名`
-				for (let s of Object.keys(speakers)){
+# 登場可能人名リスト
+`
+				for (let s of this.shuffleArray(Object.keys(speakers))){
 					message += "- " + s + "\n";
 				}
 				message += "\n\n# チャットログ\n";
 				for (let s of msgs){
 					message += s + "\n";
 				}
+				console.log(message)
 				const completion = await this.openai.chat.completions.create({
 					model: process.env.OPENAI_API_KEY ? "gpt-4o-mini" : "llama3.1",
 					messages: [
