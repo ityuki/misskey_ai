@@ -2,13 +2,14 @@ import { bindThis } from '@/decorators.js';
 import Module from '@/module.js';
 import Message from '@/message.js';
 import OpenAI from "openai";
+import process from "process";
 
 export default class extends Module {
 	public readonly name = 'llmchat';
 	private running = false;
 	private openai = new OpenAI({
-		baseURL: "http://localhost:11434/v1",
-		apiKey: "API-KEY"
+		baseURL: process.env.OPENAI_API_KEY ? null : "http://localhost:11434/v1",
+		apiKey: process.env.OPENAI_API_KEY ? process.env.OPENAI_API_KEY : "API-KEY"
 	})
 	private sysmsg = `
 # あなたの作業
@@ -104,6 +105,7 @@ export default class extends Module {
 					msgs.push(note.user.name.replace(",","_").replace(/(\r|\n)/,'') + "," + note.text.replace(",","_").replace(/(\r|\n)/,''));
 				}
 				let message = `自分の発言を１文生成してください。
+` + msg.user.name + `さんに対しての発言が望ましいです（強制はしません）
 
 # 登場可能人名`
 				for (let s of Object.keys(speakers)){
@@ -114,7 +116,7 @@ export default class extends Module {
 					message += s + "\n";
 				}
 				const completion = await this.openai.chat.completions.create({
-					model: "llama3.1",
+					model: process.env.OPENAI_API_KEY ? "gpt-4o-mini" : "llama3.1",
 					messages: [
 						{ "role": "system", content: this.sysmsg },
 						{ "role": "user", "content": message }
@@ -122,7 +124,8 @@ export default class extends Module {
 				});
 				retstr = completion.choices[0].message.content || "";
 			}catch(e){
-				throw e;
+				console.log(e);
+				retstr = "頭が寝てます";
 			}finally{
 				this.running = false;
 			}
