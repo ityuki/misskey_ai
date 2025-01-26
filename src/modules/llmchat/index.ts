@@ -89,7 +89,7 @@ export default class extends Module {
 			this.running = true;
 			try{
 				const tl = await this.ai.api('notes/local-timeline', {
-					limit: 50
+					limit: 200
 				});
 				// @ts-ignore
 				const interestedNotes = tl.filter(note =>
