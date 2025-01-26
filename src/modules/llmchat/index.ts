@@ -108,6 +108,7 @@ export default class extends Module {
 				let target = msg.user.name + `さんに対しての発言が望ましいです（強制はしません）`
 				if (query != null){
 					target = msg.user.name + `さんに対しての発言でもかまいませんが、50%位の確立で他の人を選んでください。`
+					target = ""
 				}
 				let message = `自分の発言を１文生成してください。
 ` + target + `
