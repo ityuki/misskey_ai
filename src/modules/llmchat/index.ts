@@ -104,11 +104,18 @@ export default class extends Module {
 					speakers[note.user.name] = true;
 					msgs.push(note.user.name.replace(",","_").replace(/(\r|\n)/,'') + "," + note.text.replace(",","_").replace(/(\r|\n)/,''));
 				}
-				const query = msg.text.match(/(^|\s+)global(\s+|$)/);
 				let target = msg.user.name + `さんに対しての発言が望ましいです（強制はしません）`
+				let query = msg.text.match(/(^|\s+)global(\s+|$)/i);
 				if (query != null){
-					target = msg.user.name + `さんに対しての発言でもかまいませんが、50%位の確立で他の人を選んでください。`
 					target = ""
+				}
+				query = msg.text.match(/(^|\s+)withoutme(\s+|$)/i);
+				if (query != null){
+					target = msg.user.name + `さん以外に対しての発言が望ましいです（強制はしません）`
+				}
+				query = msg.text.match(/(^|\s+)ai(\s+|$)/i);
+				if (query != null){
+					target = `自分のこと対しての発言が望ましいです（強制はしません）`
 				}
 				let message = `自分の発言を１文生成してください。
 ` + target + `
