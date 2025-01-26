@@ -104,8 +104,13 @@ export default class extends Module {
 					speakers[note.user.name] = true;
 					msgs.push(note.user.name.replace(",","_").replace(/(\r|\n)/,'') + "," + note.text.replace(",","_").replace(/(\r|\n)/,''));
 				}
+				const query = msg.text.match(/(^|\s+)global(\s+|$)/);
+				let target = msg.user.name + `さんに対しての発言が望ましいです（強制はしません）`
+				if (query != null){
+					target = msg.user.name + `さんに対しての発言でもかまいませんが、50%位の確立で他の人を選んでください。`
+				}
 				let message = `自分の発言を１文生成してください。
-` + msg.user.name + `さんに対しての発言が望ましいです（強制はしません）
+` + target + `
 
 # 登場可能人名`
 				for (let s of Object.keys(speakers)){
