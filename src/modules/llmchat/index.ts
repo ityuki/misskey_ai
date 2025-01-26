@@ -117,7 +117,7 @@ export default class extends Module {
 				}
 				query = msg.text.match(/(^|\s+)ai(\s+|$)/i);
 				if (query != null){
-					target = `藍ちゃんに関する発言をしてください。
+					target = `- 自分に関する発言をしてください。
 - 自分について、褒め言葉返しても良い
 - 自分についての情報を含んだ言葉を返しても良い`
 					smalllog = true;
