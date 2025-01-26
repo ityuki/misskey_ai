@@ -36,6 +36,7 @@ import ReminderModule from './modules/reminder/index.js';
 import CheckCustomEmojisModule from './modules/check-custom-emojis/index.js';
 import ToiebaModule from './modules/toieba/index.js';
 import EarthQuakeWarningModule from './modules/earthquake_warning/index.js';
+import LLMChat from './modules/llmchat/index.js';
 
 console.log('   __    ____  _____  ___ ');
 console.log('  /__\\  (_  _)(  _  )/ __)');
@@ -102,6 +103,7 @@ promiseRetry(retry => {
 		new CheckCustomEmojisModule(),
                 new ToiebaModule(),
                 new EarthQuakeWarningModule(),		
+								new LLMChat(),
 	]);
 }).catch(e => {
 	log(chalk.red('Failed to fetch the account'));
