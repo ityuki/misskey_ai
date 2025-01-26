@@ -115,7 +115,7 @@ export default class extends Module {
 				}
 				query = msg.text.match(/(^|\s+)ai(\s+|$)/i);
 				if (query != null){
-					target = `藍ちゃんのことに関しての発言が望ましいです。チャットログは無視してもかまいません。`
+					target = `藍ちゃんの自分のことに関しての発言をしてください。その際、登場可能人名や、チャットログは無視してもかまいません。`
 				}
 				let message = `自分の発言を１文生成してください。
 ` + target + `
