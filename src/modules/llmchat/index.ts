@@ -137,7 +137,7 @@ export default class extends Module {
 				}
 				query = msg.text.match(/(^|\s+)msg\s+(.+)(\s+|$)/i);
 				if (query != null){
-					target = `問い合わせ ` + query[2].substring(0,30) + ` に関する発言が望ましいです`
+					target = `発言者名 ` + username + ` からの問い合わせ ` + query[2].substring(0,30) + ` に関する発言が望ましいです`
 				}
 				query = msg.text.match(/(^|\s+)ai(\s+|$)/i);
 				if (query != null){
