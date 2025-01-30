@@ -85,6 +85,7 @@ export default class extends Module {
 	@bindThis
 	private async mentionHook(msg: Message) {
 		if (msg.text == null) return false;
+		if (msg.user.host != null) return false;
 
 		const query = msg.text.match(/(^|\s+)chat(\s+|$)/);
 
@@ -92,7 +93,22 @@ export default class extends Module {
 
 		let retstr = '';
 
-		if (!this.running){
+		const hq = msg.text.match(/(^|\s+)chat\s+help(\s+|$)/);
+		if (hq != null){
+			retstr = `@ai chatコマンドヘルプ
+
+オプションをつけると普段とは違っためっせーじを返します！
+
+@ai chat たぶんあなた向けです。
+@ai chat global 誰宛とか気にしません。
+@ai chat withoutme 自分以外向けですかね？
+@ai chat user ユーザ名 ユーザ名に話しかけたい
+@ai chat msg 問い合わせ内容 問い合わせ内容ですか？
+@ai chat ai 私について聞きたいですか！？
+`
+		}
+
+		if (retstr == "" && !this.running){
 			this.running = true;
 			try{
 				const tl = await this.ai.api('notes/local-timeline', {
@@ -103,17 +119,25 @@ export default class extends Module {
 					note.userId !== this.ai.account.id &&
 					note.text != null &&
 					note.text.startsWith("@ai ") == false &&
-					note.user.name !== null &&
 					note.cw == null);
 				let smalllog = false;
-				let target = msg.user.name + `さんに対しての発言が望ましいです（強制はしません）`
+				let username = msg.user.name || msg.user.username;
+				let target = `発言者名 ` + username + ` に対しての発言が望ましいです（強制はしません）`
 				let query = msg.text.match(/(^|\s+)global(\s+|$)/i);
 				if (query != null){
 					target = ""
 				}
 				query = msg.text.match(/(^|\s+)withoutme(\s+|$)/i);
 				if (query != null){
-					target = msg.user.name + `さん以外に対しての発言が望ましいです（強制はしません）`
+					target = `発言者名 ` + username + ` 以外に対しての発言が望ましいです`
+				}
+				query = msg.text.match(/(^|\s+)user\s+(.+)(\s+|$)/i);
+				if (query != null){
+					target = `発言者名 ` + query[2].substring(0,20) + ` に対しての発言が望ましいです`
+				}
+				query = msg.text.match(/(^|\s+)msg\s+(.+)(\s+|$)/i);
+				if (query != null){
+					target = `問い合わせ ` + query[2].substring(0,30) + ` に関する発言が望ましいです`
 				}
 				query = msg.text.match(/(^|\s+)ai(\s+|$)/i);
 				if (query != null){
@@ -125,14 +149,15 @@ export default class extends Module {
 				const speakers = {};
 				const msgs:string[] = [];
 				for (const note of interestedNotes) {
-					if (speakers[note.user.name] === undefined) speakers[note.user.name] = 0;
-					speakers[note.user.name] += 1;
+					const un = note.user.name || note.user.username;
+					if (speakers[un] === undefined) speakers[un] = 0;
+					speakers[un] += 1;
 					if (smalllog){
-						if (speakers[note.user.name] < 3){
-							msgs.push(note.user.name.replace(",","_").replace(/[\r\n]/g,'') + "," + note.text.replace(",","_").replace(/[\r\n]/g,''));
+						if (speakers[un] < 3){
+							msgs.push(un.replace(",","_").replace(/[\r\n]/g,'') + "," + note.text.replace(",","_").replace(/[\r\n]/g,''));
 						}
 					}else{
-						msgs.push(note.user.name.replace(",","_").replace(/[\r\n]/g,'') + "," + note.text.replace(",","_").replace(/[\r\n]/g,''));
+						msgs.push(un.replace(",","_").replace(/[\r\n]/g,'') + "," + note.text.replace(",","_").replace(/[\r\n]/g,''));
 					}
 				}
 				let message = `自分の発言を１文生成してください。
@@ -162,7 +187,7 @@ export default class extends Module {
 			}finally{
 				this.running = false;
 			}
-		}else{
+		}else if (retstr == ""){
 			retstr = "他のことを考えてるので、また後で";
 		}
 		if (retstr == ""){
