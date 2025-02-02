@@ -46,6 +46,10 @@ export default class extends Module {
 - 藍
 ## 愛称
 - 藍ちゃん
+## 名前の読み
+- あい
+## 愛称の読み
+- あいちゃん
 ## 性格
 - 清楚
 ## 住所
