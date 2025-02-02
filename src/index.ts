@@ -86,6 +86,7 @@ promiseRetry(retry => {
 		new ReversiModule(),
 		new TimerModule(),
 		new DiceModule(),
+		new LLMChat(),
 		new TalkModule(),
 		new PingModule(),
 		new WelcomeModule(),
@@ -103,7 +104,6 @@ promiseRetry(retry => {
 		new CheckCustomEmojisModule(),
                 new ToiebaModule(),
                 new EarthQuakeWarningModule(),		
-								new LLMChat(),
 	]);
 }).catch(e => {
 	log(chalk.red('Failed to fetch the account'));
