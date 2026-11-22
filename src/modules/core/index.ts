@@ -66,7 +66,7 @@ export default class extends Module {
 		if (!msg.text.includes('って呼んで')) return false;
 		if (msg.text.startsWith('って呼んで')) return false;
 
-		const name = msg.text.match(/^(.+?)って呼んで/g)![1];
+		const name = msg.extractedText.match(/\s*(.+?)って呼んで/)![1];
 
 		if (name.length > 10) {
 			msg.reply(serifs.core.tooLong);
@@ -85,7 +85,7 @@ export default class extends Module {
 			msg.reply(serifs.core.setNameOk(name));
 		} else {
 			msg.reply(serifs.core.san).then(reply => {
-				this.subscribeReply(msg.userId, reply.id, {
+				this.subscribeReply(msg.userId, msg.isChat, msg.isChat ? msg.userId : reply.id, {
 					name: name
 				});
 			});
@@ -143,7 +143,7 @@ export default class extends Module {
 			done();
 		} else {
 			msg.reply(serifs.core.yesOrNo).then(reply => {
-				this.subscribeReply(msg.userId, reply.id, data);
+				this.subscribeReply(msg.userId, msg.isChat, reply.id, data);
 			});
 		}
 	}

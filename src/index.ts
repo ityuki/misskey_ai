@@ -37,6 +37,7 @@ import CheckCustomEmojisModule from './modules/check-custom-emojis/index.js';
 import ToiebaModule from './modules/toieba/index.js';
 import EarthQuakeWarningModule from './modules/earthquake_warning/index.js';
 import LLMChat from './modules/llmchat/index.js';
+import AiChatModule from './modules/aichat/index.js';
 
 console.log('   __    ____  _____  ___ ');
 console.log('  /__\\  (_  _)(  _  )/ __)');
@@ -78,6 +79,10 @@ promiseRetry(retry => {
 	// @ts-ignore
 	new 藍(account, [
 		new CoreModule(),
+		new AiChatModule(),
+		new ReminderModule(),
+		new TalkModule(),
+		new CheckCustomEmojisModule(),
 		new EmojiModule(),
 		new EmojiReactModule(),
 		new FortuneModule(),
@@ -86,8 +91,6 @@ promiseRetry(retry => {
 		new ReversiModule(),
 		new TimerModule(),
 		new DiceModule(),
-		new LLMChat(),
-		new TalkModule(),
 		new PingModule(),
 		new WelcomeModule(),
 		new ServerModule(),
@@ -100,10 +103,9 @@ promiseRetry(retry => {
 		new SleepReportModule(),
 		new NotingModule(),
 		new PollModule(),
-		new ReminderModule(),
-		new CheckCustomEmojisModule(),
-                new ToiebaModule(),
-                new EarthQuakeWarningModule(),		
+		new LLMChat(),
+		new ToiebaModule(),
+		new EarthQuakeWarningModule(),		
 	]);
 }).catch(e => {
 	log(chalk.red('Failed to fetch the account'));

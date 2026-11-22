@@ -12,6 +12,13 @@ type Config = {
 	serverMonitoring: boolean;
 	checkEmojisEnabled?: boolean;
 	checkEmojisAtOnce?: boolean;
+	geminiProApiKey?: string;
+	pLaMoApiKey?: string;
+	prompt?: string;
+	aichatRandomTalkEnabled?: boolean;
+	aichatRandomTalkProbability?: string;
+	aichatRandomTalkIntervalMinutes?: string;
+	aichatGroundingWithGoogleSearchAlwaysEnabled?: boolean;
 	mecab?: string;
 	mecabDic?: string;
 	memoryDir?: string;
